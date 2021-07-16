@@ -1,25 +1,20 @@
 <?php
 
-
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\File;
-
-class Post
+class Post extends Model
 {
-    public static function all(){
-        return File::files(resource_path())
-    }
+    use HasFactory;
 
-    public static  function find($slug){
+    // protected $fillable = ['title', 'excerpt', 'body'];
 
-        if(! file_exists($path = resource_path("posts/{$slug}.html"))){
-            throw new ModelNotFoundException();
-        }
+    public function category(){
 
-        return cache()->remember("post.{$slug}", 1200, fn() => file_get_contents($path));
+        return $this -> belongsTo(Category::class);
 
     }
+
 }
